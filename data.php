@@ -6,15 +6,23 @@ error_reporting(E_ALL);
 $servername = "127.0.0.1";
 $username = "root";
 $password = "lol12345";
+$dbName = "solar";
 
 // Create connection
-$conn = new mysqli($servername, $username, $password);
+$conn = new mysqli($servername, $username, $password, $dbName);
 
 // Check connection
 if ($conn->connect_error) {
  die("Connection failed: " . $conn->connect_error);
+ return;
 }
 
-echo $_GET['type'];
+$sql = "SELECT value, lastname FROM data WHERE type=" + $_GET['type'];
+$result = $conn->query($sql);
+$row = $result->fetch_assoc();
+echo $row["value"];
+
+$conn->close();
+// echo $_GET['type'];
 
 ?>
