@@ -1,3 +1,5 @@
+GNU nano 3.2                                                                                    data.php                                                                                              
+
 <?php
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
@@ -17,12 +19,12 @@ if ($conn->connect_error) {
  return;
 }
 
-$sql = "SELECT value, lastname FROM data WHERE type=" + $_GET['type'];
+$type = $_GET['type'];
+$sql = "SELECT value FROM data WHERE type="."'".$type."'";
 $result = $conn->query($sql);
 $row = $result->fetch_assoc();
 echo $row["value"];
 
 $conn->close();
-// echo $_GET['type'];
 
 ?>
