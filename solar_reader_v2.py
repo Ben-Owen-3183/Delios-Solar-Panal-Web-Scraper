@@ -31,10 +31,6 @@ sites_to_scrape = [
         'auth_url': 'https://webportal-backend.delios-srl.it/authenticate',
         'api_url': 'https://webportal-backend.delios-srl.it/machine_logs/get_machine_log_general',
     },
-    {
-        'auth_url': 'https://webportal-backend.delios-srl.it/authenticate',
-        'api_url': 'https://webportal-backend.delios-srl.it/machine_logs/get_machine_log_general',
-    }
 ]
 
 
