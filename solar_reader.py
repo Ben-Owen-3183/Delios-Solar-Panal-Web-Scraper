@@ -23,6 +23,7 @@ xpath_list = {
 solar_reader_thread = None
 solar_reader_running = True
 
+
 def run():
     global solar_reader_thread
     connect_to_database()
@@ -86,7 +87,6 @@ def connect_to_database():
             database="solar"
         )
         mycursor = database.cursor()
-        # mycursor.execute('use solar;')
 
     except Error as e:
         print(prompt + str(e))
@@ -172,6 +172,7 @@ def solar_reader():
         print(prompt + "Solar Reader Thread Error: " + str(e))
         print(prompt + 'Thread finshed, type start to run again')
         traceback.print_exc()
+
 
 def store_data(values):
     for key, value in values.items():
