@@ -72,7 +72,7 @@ NOTE:
                     <td><p><?=$row[1]?></p></td>
                     <td>
                         <a href="/data.php?type=<?=$row[0]?>">
-                        <?=$host_url."/data.php?type=".$row[0]?>"
+                            <?=$host_url."/data.php?type=".$row[0]?>
                         </a>
                     </td>
                 </tr>
