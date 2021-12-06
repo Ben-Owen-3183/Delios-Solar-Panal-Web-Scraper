@@ -31,7 +31,6 @@ $rows = $result->fetch_all();
 <html style="background-color: black;">
     
     <head>
-   
         <style>
             table, th, td {
                 color: #03A062;
@@ -45,17 +44,21 @@ $rows = $result->fetch_all();
             td {
                 padding: 5px;
             }
-            p, pre {
-                color: #03A062;
-            }
         </style>
     </head>
 
     <body>
         <em><h2 style="color: #03A062;">Delios Solar Panel Web Scraper</h2></em>
-      
-        <p id="UPDATE"></p>
-        
+        <pre style="color: #03A062;">
+NOTE: 
+<strong>The following values are worked out as the mean value (avg) from each solar panel system that is linked</strong>
+- percentbattery
+- energy_battery_char
+- energy_battery_discha
+- self_sufficiency
+<strong>All other values are accumulated i.e. added together.</strong>
+
+        </pre>
         <table>
             <tr>
                 <td><strong>Type</strong></td>
@@ -65,8 +68,8 @@ $rows = $result->fetch_all();
             <?php foreach($rows as $row): ?>
                 <tr>
                     <td><p><?=$row[0]?></p></td>
-                    
-                    <td><p id="<?=$row[0]?>"></p></td>
+
+                    <td><p><?=$row[1]?></p></td>
                     <td>
                         <a href="/data.php?type=<?=$row[0]?>">
                             <?=$host_url."/data.php?type=".$row[0]?>
@@ -75,8 +78,5 @@ $rows = $result->fetch_all();
                 </tr>
             <?php endforeach; ?>
         </table>
-        <script src="api_polling.js">  
-        </script> 
-
     </body>
 </html>

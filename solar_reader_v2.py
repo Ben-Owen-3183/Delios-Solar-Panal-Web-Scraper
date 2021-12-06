@@ -83,14 +83,31 @@ def main():
         quit()
 
     init()
-    while running:
-        time.sleep(poll_rate)
 
-        run()
+    while running:
         try:
+            print('scrape...')
             run()
         except Exception as e:
-            print('failed to poll api')
+            print(str(e))
+            if(str(e) == 'POLLING_FAILED'):
+                try:
+                    re_login_scrapers()
+                except:
+                    print('failed to log back in')
+            if(str(e) == 'STORING_FAILED'):
+                try:
+                    connect_to_database()
+                except:
+                    print('failed to connect to database')
+        time.sleep(poll_rate)
+
+
+def re_login_scrapers():
+    global scrapers
+    for scraper in scrapers:
+        scraper.login()
+
 
 
 def init():
@@ -113,28 +130,35 @@ def run():
 
     data_list = []
     for scraper in scrapers:
-        data = scraper.poll_api()
-        data_list.append(data)
+        try:
+            data = scraper.poll_api()
+            data_list.append(data)
+        except:
+            raise Exception('POLLING_FAILED')
 
-    store(format_data(data_list))
+    try:
+        store(format_data(data_list))
+    except:
+        raise Exception('STORING_FAILED')
 
 
 class Scraper():
     def __init__(self, auth_url, api_url):
         self.api_url = api_url
+        self.auth_url = auth_url
         self.session = requests.Session()
-        self.login(auth_url)
+        self.login()
 
 
-    def login(self, auth_url):
-        response = self.session.post(auth_url, data=auth_payload)
+    def login(self):
+        response = self.session.post(self.auth_url, data=auth_payload, timeout=10)
         token = response.json()['token']
         self.data_request_payload = {"plant_id":548,"machine_id":""}
         self.session.headers['Authorization'] = 'Bearer ' + token
 
 
     def poll_api(self):
-        return self.session.post(self.api_url, data=self.data_request_payload).json()
+        return self.session.post(self.api_url, data=self.data_request_payload, timeout=10).json()
 
 
 def create_scrapers():
@@ -191,6 +215,7 @@ def store(data):
 def signal_handler(signal, frame):
     global running
     running = False
+    quit()
 signal.signal(signal.SIGINT, signal_handler)
 
 
@@ -198,17 +223,6 @@ signal.signal(signal.SIGINT, signal_handler)
 
 # MAIN START
 main()
-
-
-
-
-
-
-
-
-
-
-
 
 
 
