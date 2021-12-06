@@ -8,7 +8,7 @@ sudo systemctl restart solar_scraper.service
 yellow='\e[0;33m'
 white='\e[0;37m'
 
-echo "\nrun the commands: "
+echo -e "\nrun the commands: "
 echo -e "\t${yellow}sudo systemctl status nginx"
 echo -e "${white}and"
 echo -e "\t${yellow}sudo systemctl status solar_scraper.service"
