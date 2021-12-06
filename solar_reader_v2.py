@@ -86,7 +86,6 @@ def main():
 
     while running:
         try:
-            print('scrape...')
             run()
         except Exception as e:
             print(str(e))
