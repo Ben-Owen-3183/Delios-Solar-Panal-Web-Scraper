@@ -21,10 +21,15 @@ if ($conn->connect_error) {
  return;
 }
 
-$sql = "SELECT type, value FROM data";
+$sql = "SELECT type, value, machine FROM data where machine = 'machine-1'";
 $result = $conn->query($sql);
+$machine1_data = $result->fetch_all();
 
-$rows = $result->fetch_all();
+$sql = "SELECT type, value, machine FROM data where machine = 'machine-2'";
+$result = $conn->query($sql);
+$machine2_data = $result->fetch_all();
+
+$data = ['Machine 1'=> $machine1_data, 'Machine 2'=> $machine2_data]
 
 ?>
 
@@ -45,8 +50,19 @@ $rows = $result->fetch_all();
             td {
                 padding: 5px;
             }
-            p, pre {
+            p, pre, h1 {
                 color: #03A062;
+            }
+            div {
+                border-style: solid;
+                border-width: 2px;
+                border-color: #03A062;
+                justify-content: center;
+                display: flex;
+            }
+            body{ 
+                max-width: max-content;
+                margin: auto;
             }
         </style>
     </head>
@@ -56,25 +72,56 @@ $rows = $result->fetch_all();
       
         <p id="UPDATE"></p>
         
-        <table>
-            <tr>
-                <td><strong>Type</strong></td>
-                <td><strong>Value</strong></td>
-                <td><strong>URL</strong></td>
-            </tr>
-            <?php foreach($rows as $row): ?>
+        <?php foreach($data as $key => $value ): ?>
+            <table>
+                <thead>
+                    <tr>
+                        <td colspan="3"><h1><?=$key?></h1></td>
+                    </tr>
+                </thead>
                 <tr>
-                    <td><p><?=$row[0]?></p></td>
-                    
-                    <td><p id="<?=$row[0]?>"></p></td>
-                    <td>
-                        <a href="/data.php?type=<?=$row[0]?>">
-                            <?=$host_url."/data.php?type=".$row[0]?>
-                        </a>
-                    </td>
+                    <td><strong>Type</strong></td>
+                    <td><strong>Value</strong></td>
+                    <td><strong>URL</strong></td>
                 </tr>
-            <?php endforeach; ?>
-        </table>
+                <?php foreach($value as $row): ?>
+                    <tr>
+                        <td><p><?=$row[0]?></p></td>
+                        
+                        <td><p id="<?=$row[0].$row[2]?>"><?=$row[1]?></p></td>
+                        <td>
+                            <a href="/data.php?type=<?=$row[0]."&machine=".$row[2]?>">
+                                <?=$host_url."/data.php?type=".$row[0]."&machine=".$row[2]?>
+                            </a>
+                        </td>
+                    </tr>
+                <?php endforeach; ?>
+
+                <!-- Flags -->
+                <thead>
+                    <tr>
+                        <td colspan="3"><h1>Flags</h1></td>
+                    </tr>
+                </thead>
+                <?php foreach($value as $row): ?>
+                    <tr>
+                        <td><p><?=$row[0]?></p></td>
+                        
+                        <td><p id="<?=$row[0].$row[2]."flag"?>"><?= (int)$row[1] > 0 ? 1 : 0  ?></p></td>
+                        <td>
+                            <a href="/data_flag.php?type=<?=$row[0]."&machine=".$row[2]?>">
+                                <?=$host_url."/data_flag.php?type=".$row[0]."&machine=".$row[2]?>
+                            </a>
+                        </td>
+                    </tr>
+                <?php endforeach; ?>
+            </table>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+        <?php endforeach; ?>
         <script src="api_polling.js">  
         </script> 
 

@@ -63,20 +63,20 @@ def intialise_database():
  
 
 def main():
-    if(len(sys.argv) < 2):
+    if len(sys.argv) < 2:
         print('no valid argument passed. Use these...')
         print('init -> to intialise solar reader database')
         print('run -> to start program')
         quit()
-    elif(sys.argv[1] == 'help'):
+    elif sys.argv[1] == 'help':
         print('init -> to intialise solar reader')
         print('run -> to start program')
         quit()
-    elif(sys.argv[1] == 'init'):
+    elif sys.argv[1] == 'init':
         print('setting up database...')
         intialise_database()
         quit()
-    elif(sys.argv[1] != 'run'):
+    elif sys.argv[1] != 'run':
         print('no valid argument passed. Use these...')
         print('init -> to intialise solar reader database')
         print('run -> to start program')
@@ -89,12 +89,12 @@ def main():
             run()
         except Exception as e:
             print(str(e))
-            if(str(e) == 'POLLING_FAILED'):
+            if str(e) == 'POLLING_FAILED':
                 try:
                     re_login_scrapers()
                 except:
                     print('failed to log back in')
-            if(str(e) == 'STORING_FAILED'):
+            if str(e) == 'STORING_FAILED':
                 try:
                     connect_to_database()
                 except:

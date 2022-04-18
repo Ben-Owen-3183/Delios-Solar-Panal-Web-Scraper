@@ -20,7 +20,7 @@ if ($conn->connect_error) {
  return;
 }
 
-$sql = "SELECT type, value FROM data";
+$sql = "SELECT type, value, machine FROM data";
 $result = $conn->query($sql);
 
 $rows = $result->fetch_all();

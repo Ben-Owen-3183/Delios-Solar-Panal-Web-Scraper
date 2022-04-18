@@ -19,11 +19,10 @@ if ($conn->connect_error) {
 }
 
 $type = $_GET['type'];
-$machine = $_GET['machine'];
-$sql = "SELECT value FROM data WHERE type="."'".$type."' and machine="."'".$machine."'";
+$sql = "SELECT value FROM data WHERE type="."'".$type."'";
 $result = $conn->query($sql);
 $row = $result->fetch_assoc();
-echo $row["value"];
-
+echo (int)$row["value"] > 0 ? 1 : 0;
 $conn->close();
+
 ?>
